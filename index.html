@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Will you be my Valentine? ❤️</title>
+  <title>Be My Valentine ❤️</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
-      background: #ffe4ec;
+      background: #e6ccff; /* lilac background */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -16,31 +16,36 @@
       overflow: hidden;
     }
 
-    /* Floating hearts background */
+    /* Floating hearts */
     .heart {
       position: fixed;
       bottom: -20px;
       font-size: 20px;
       animation: floatUp linear infinite;
-      opacity: 0.7;
+      opacity: 0.8;
+    }
+
+    /* Floating roses */
+    .rose {
+      position: fixed;
+      bottom: -20px;
+      font-size: 24px;
+      animation: floatUp linear infinite;
+      opacity: 0.9;
     }
 
     @keyframes floatUp {
-      from {
-        transform: translateY(0);
-      }
-      to {
-        transform: translateY(-110vh);
-      }
+      from { transform: translateY(0); }
+      to { transform: translateY(-110vh); }
     }
 
     .card {
-      background: white;
+      background: linear-gradient(135deg, #ffffff, #ffe6f2);
       padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      border-radius: 22px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
       text-align: center;
-      max-width: 400px;
+      max-width: 420px;
       width: 90%;
       position: relative;
       z-index: 2;
@@ -48,10 +53,12 @@
 
     h1 {
       margin-bottom: 10px;
+      color: #cc0066;
     }
 
     p {
       font-size: 18px;
+      color: #333;
     }
 
     .buttons {
@@ -64,35 +71,55 @@
     }
 
     button {
-      padding: 12px 22px;
+      padding: 12px 24px;
       border: none;
-      border-radius: 12px;
+      border-radius: 14px;
       font-size: 16px;
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       position: absolute;
+      font-weight: bold;
     }
 
     button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.2);
     }
 
     .yes {
-      background: #ff4d6d;
+      background: linear-gradient(135deg, #ff4d6d, #ff1a4d);
       color: white;
       left: 30%;
     }
 
     .no {
-      background: #eee;
+      background: #f2f2f2;
       left: 55%;
     }
 
     .result {
-      font-size: 20px;
+      font-size: 22px;
       margin-top: 20px;
       font-weight: bold;
+      color: #cc0066;
+    }
+
+    #photoSection {
+      display: none;
+      margin-top: 20px;
+      animation: fadeIn 1.2s ease;
+    }
+
+    #photoSection img {
+      width: 320px;
+      border-radius: 16px;
+      margin-top: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     canvas {
@@ -106,7 +133,7 @@
 </head>
 <body>
 
-  <!-- Floating hearts -->
+  <!-- Floating hearts + roses -->
   <script>
     function createHeart() {
       const heart = document.createElement("div");
@@ -115,19 +142,29 @@
       heart.style.left = Math.random() * 100 + "vw";
       heart.style.animationDuration = (4 + Math.random() * 4) + "s";
       document.body.appendChild(heart);
-
       setTimeout(() => heart.remove(), 8000);
     }
 
+    function createRose() {
+      const rose = document.createElement("div");
+      rose.className = "rose";
+      rose.innerText = "🌹";
+      rose.style.left = Math.random() * 100 + "vw";
+      rose.style.animationDuration = (5 + Math.random() * 5) + "s";
+      document.body.appendChild(rose);
+      setTimeout(() => rose.remove(), 9000);
+    }
+
     setInterval(createHeart, 500);
+    setInterval(createRose, 900);
   </script>
 
   <canvas id="confetti"></canvas>
 
   <div class="card">
-    <h1>Hey Anisha ❤️</h1>
-    <p>I made this little website just for you.</p>
-    <p><strong>Will you be my Valentine?</strong></p>
+    <h1>Hiiii Anshuu ❤️</h1>
+    <p>big question</p>
+    <p><strong>Will you be my Valentine? :3</strong></p>
 
     <div class="buttons" id="buttonArea">
       <button class="yes" onclick="sayYes()">Yes 💖</button>
@@ -135,6 +172,14 @@
     </div>
 
     <div id="result" class="result"></div>
+
+    <!-- PHOTO + FINAL MESSAGE AFTER YES -->
+    <div id="photoSection">
+      <p style="font-size:20px; font-weight:bold; color:#cc0066;">
+        I knew you'd say yes hahahahhaha ❤️
+      </p>
+      <img src="ourphoto.jpg" alt="Us together">
+    </div>
   </div>
 
   <script>
@@ -170,8 +215,7 @@
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height - canvas.height,
           size: Math.random() * 6 + 4,
-          speed: Math.random() * 3 + 2,
-          angle: Math.random() * 360
+          speed: Math.random() * 3 + 2
         });
       }
     }
@@ -179,6 +223,7 @@
     function drawConfetti() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       pieces.forEach(p => {
+        ctx.fillStyle = "#ff4d6d";
         ctx.fillRect(p.x, p.y, p.size, p.size);
         p.y += p.speed;
       });
@@ -186,7 +231,8 @@
     }
 
     function sayYes() {
-      document.getElementById("result").innerText = "hehehehehh I knew you'd say yes ❤️";
+      document.getElementById("result").innerText = "YAY!!! ❤️";
+      document.getElementById("photoSection").style.display = "block";
       createConfetti();
       drawConfetti();
     }
